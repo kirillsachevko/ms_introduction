@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: song-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/song-db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+server:
+  port: 8081
