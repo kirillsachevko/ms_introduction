@@ -1,6 +1,6 @@
-CREATE TABLE mp3Entity
+CREATE TABLE IF NOT EXISTS mp3entity
 (
-    id         BIGINT PRIMARY KEY,
-    binaryData BYTEA NOT NULL
+    id          BIGSERIAL PRIMARY KEY,
+    binary_data BYTEA
 );
 

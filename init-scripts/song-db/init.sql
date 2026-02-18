@@ -1,4 +1,4 @@
-CREATE TABLE mp3Entity
+CREATE TABLE IF NOT EXISTS mp3metadata
 (
     id       BIGINT PRIMARY KEY,
     name     VARCHAR(255) NOT NULL ,

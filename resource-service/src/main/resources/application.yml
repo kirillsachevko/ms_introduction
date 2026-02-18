@@ -11,6 +11,5 @@ spring:
 server:
   port: ${RESOURCE_SERVICE_PORT:8080}
 
-
 song-service:
   url: ${SONG_SERVICE_URL:http://localhost:8081/songs}

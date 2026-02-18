@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "mp3entity")
 @Getter
 @NoArgsConstructor
 public class Mp3Entity {
@@ -15,7 +16,7 @@ public class Mp3Entity {
     @Positive
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Lob
+    @Column(name = "binary_data")
     private byte[] binaryData;
 
     public Mp3Entity(byte[] binaryData) {
