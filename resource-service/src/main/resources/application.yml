@@ -3,19 +3,14 @@ spring:
     name: resource-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/resource-db
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    open-in-view: false
+    url: ${RESOURCE_DB_URL:jdbc:postgresql://localhost:5432/resource_db}
+    username: ${RESOURCE_DB_USER:postgres}
+    password: ${RESOURCE_DB_PASSWORD:postgres}
+    driver-class-name: ${RESOURCE_DB_DRIVER:org.postgresql.Driver}
 
 server:
-  port: 8080
+  port: ${RESOURCE_SERVICE_PORT:8080}
 
 
 song-service:
-  url: http://localhost:8081/songs
+  url: ${SONG_SERVICE_URL:http://localhost:8081/songs}
