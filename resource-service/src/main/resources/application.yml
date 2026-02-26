@@ -9,7 +9,18 @@ spring:
     driver-class-name: ${RESOURCE_DB_DRIVER:org.postgresql.Driver}
 
 server:
-  port: ${RESOURCE_SERVICE_PORT:8080}
+  port: ${RESOURCE_SERVICE_PORT:8081}
 
 song-service:
-  url: ${SONG_SERVICE_URL:http://localhost:8081/songs}
+  url: ${SONG_SERVICE_URL:http://song-service/songs}
+
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: false
+    non-secure-port: 8081
+    instance-id: ${spring.application.name}:${server.port}
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761/eureka}
+    registry-fetch-interval-seconds: ${FETCH_INTERVAL:5}

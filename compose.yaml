@@ -27,26 +27,61 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - resource-db
+      - service-discovery
     environment:
       SPRING_DATASOURCE_URL: ${RESOURCE_DB_URL}
       SPRING_DATASOURCE_USERNAME: ${RESOURCE_DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${RESOURCE_DB_PASSWORD}
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${RESOURCE_DB_DRIVER}
       SONG_SERVICE_URL: ${SONG_SERVICE_URL}
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: ${EUREKA_SERVICE_URL}
+      EUREKA_CLIENT_REGISTRY_FETCH_INTERVAL_SECONDS: ${FETCH_INTERVAL}
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: ${EUREKA_PREFER_IP}
     ports:
-      - "${RESOURCE_SERVICE_PORT}:8080"
+      - "${RESOURCE_SERVICE_PORT}:8081"
 
   song-service:
     build:
       context: ./song-service
       dockerfile: Dockerfile
+    deploy:
+      replicas: 2
     depends_on:
       - song-db
+      - service-discovery
     environment:
       SPRING_DATASOURCE_URL: ${SONG_DB_URL}
       SPRING_DATASOURCE_USERNAME: ${SONG_DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${SONG_DB_PASSWORD}
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${SONG_DB_DRIVER}
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: ${EUREKA_SERVICE_URL}
+      EUREKA_CLIENT_REGISTRY_FETCH_INTERVAL_SECONDS: ${FETCH_INTERVAL}
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: ${EUREKA_PREFER_IP}
     ports:
-      - "${SONG_SERVICE_PORT}:8081"
+      - "${SONG_SERVICE_PORTS}:8082"
 
+  service-discovery:
+    build:
+      context: ./service-discovery
+      dockerfile: Dockerfile
+    environment:
+      SERVER_PORT: ${EUREKA_SERVER_PORT}
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: ${REGISTER_WITH_EUREKA}
+      EUREKA_CLIENT_FETCH_REGISTRY: ${FETCH_REGISTRY}
+      EUREKA_INSTANCE_LEASE_RENEWAL_INTERVAL_IN_SECONDS: ${FETCH_INTERVAL}
+    ports:
+      - "${EUREKA_SERVER_PORT}:8761"
+
+
+  gateway-service:
+    build:
+      context: ./gateway-service
+      dockerfile: Dockerfile
+    depends_on:
+      - service-discovery
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: ${EUREKA_SERVICE_URL}
+      EUREKA_CLIENT_REGISTRY_FETCH_INTERVAL_SECONDS: ${FETCH_INTERVAL}
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: ${EUREKA_PREFER_IP}
+    ports:
+      - "${GATEWAY_SERVICE_PORT}:8080"
