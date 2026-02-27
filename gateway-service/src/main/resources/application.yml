@@ -28,9 +28,7 @@ spring:
 
 eureka:
   instance:
-    hostname: localhost
-    prefer-ip-address: false
-    non-secure-port: ${GATEWAY_SERVICE_PORT:8080}
+    prefer-ip-address: ${EUREKA_PREFER_IP}:true
     instance-id: ${spring.application.name}:${server.port}
   client:
     service-url:

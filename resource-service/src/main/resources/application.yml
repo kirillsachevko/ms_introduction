@@ -16,9 +16,7 @@ song-service:
 
 eureka:
   instance:
-    hostname: localhost
-    prefer-ip-address: false
-    non-secure-port: 8081
+    prefer-ip-address: ${EUREKA_PREFER_IP}:true
     instance-id: ${spring.application.name}:${server.port}
   client:
     service-url:

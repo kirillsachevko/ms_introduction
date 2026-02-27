@@ -44,8 +44,6 @@ services:
     build:
       context: ./song-service
       dockerfile: Dockerfile
-    deploy:
-      replicas: 2
     depends_on:
       - song-db
       - service-discovery
@@ -58,7 +56,7 @@ services:
       EUREKA_CLIENT_REGISTRY_FETCH_INTERVAL_SECONDS: ${FETCH_INTERVAL}
       EUREKA_INSTANCE_PREFER_IP_ADDRESS: ${EUREKA_PREFER_IP}
     ports:
-      - "${SONG_SERVICE_PORTS}:8082"
+      - "8082"
 
   service-discovery:
     build:
